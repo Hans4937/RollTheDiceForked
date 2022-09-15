@@ -11,6 +11,7 @@ namespace RollTheDiceLearn
         static void Main(string[] args)
         {
             string mode = "Random";
+
             if (args.Length == 4)
             {
                 //http://www.java2s.com/Tutorial/Cpp/0040__Data-Types/Logicaloperators.htm
@@ -46,6 +47,7 @@ namespace RollTheDiceLearn
             int dice_2_2 = 0;
             bool player_equal;
             bool opponent_equal;
+            int countEquals = 0;
 
             while (cont)
             {
@@ -74,25 +76,46 @@ namespace RollTheDiceLearn
                 outmessage = string.Format("My roll: {0} - {1}", dice_2_1.ToString(), dice_2_2.ToString());
                 Console.WriteLine(outmessage);
 
-                if(player_equal && opponent_equal)
+                if (player_equal)
+                { 
+                    countEquals++;
+                }
+                if (opponent_equal)
                 {
-                    Console.WriteLine("Draw! Continuing");
-                    Console.ReadLine();
+                    countEquals++;
                 }
 
-                if (player_equal && !opponent_equal)
+                if (countEquals == 1)
                 {
-                    Console.WriteLine("You win!");
-                    Console.ReadLine();
+                    if (player_equal)
+                    {
+                        Console.WriteLine("You win!");
+                    }
+                    if (opponent_equal)
+                    {
+                        Console.WriteLine("I win!");
+                    }
                     cont = false;
                 }
 
-                if (!player_equal && opponent_equal)
+                if (countEquals == 2)
                 {
-                    Console.WriteLine("I win!");
-                    Console.ReadLine();
-                    cont = false;
+                    if ((dice_1_1 + dice_1_2) > (dice_2_1 + dice_2_2 ))
+                    {
+                        Console.WriteLine("You win!");
+                        cont = false;
+                    }   
+                    if ((dice_1_1 + dice_1_2) < (dice_2_1 + dice_2_2))
+                    {
+                        Console.WriteLine("I win!"); 
+                        cont = false;
+                    }
+                    if ((dice_1_1 + dice_1_2) == (dice_2_1 + dice_2_2))
+                    {
+                        Console.WriteLine("Draw! Continuing");
+                    }
                 }
+                Console.ReadLine();
             }
         }
     }
