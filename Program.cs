@@ -4,6 +4,12 @@ namespace RollTheDiceLearn
 {
     internal class Program
     {
+        /// <summary>
+        ///  Use args[] to test the application
+        ///  - exact 4 args, all int, 0 < value < 7
+        ///  - Example: RollTheDiceLearn.exe 4 4 4 5
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
             string mode = "Random";
@@ -27,7 +33,6 @@ namespace RollTheDiceLearn
                     Console.WriteLine("!--> one or more arguments not within range (1-6)");
                     Console.WriteLine("!--> game runs in random mode");
                 }
-
             }
 
             Console.WriteLine("this is a game where you will roll 2 dices, then I will roll 2 dices.");
@@ -35,8 +40,7 @@ namespace RollTheDiceLearn
             Console.WriteLine("- if only one of us has to dices showing equal eyes, then we have a winner");
             Console.WriteLine("- if we both has to dices showing equal eyes, then the one having largets will win");
             Console.WriteLine("You are running the game in " + mode + " mode");
-
-            
+           
             Random rand = new Random();
             bool cont = true;
             
@@ -66,54 +70,67 @@ namespace RollTheDiceLearn
                 Console.WriteLine(string.Format("Your roll: {0} - {1}", dice_1_1.ToString(), dice_1_2.ToString()));
                 Console.WriteLine(string.Format("My roll: {0} - {1}", dice_2_1.ToString(), dice_2_2.ToString()));
 
-                // this could be segragated in a method wich applies gamerules and makes decission to continue,
-                // the return of this method could be a boolean: true if continue
-                bool player_equal;
-                bool opponent_equal;
-                int countEquals = 0;
-                player_equal = dice_1_1 == dice_1_2;
-                opponent_equal = dice_2_1 == dice_2_2;
+                cont = GameRuler(dice_1_1, dice_1_2, dice_2_1, dice_2_2);
+                Console.ReadLine();
+            }
+        }
+        /// <summary>
+        ///  this method applies gamerules and makes decission to continue,
+        ///  - this method also takes care of the out messaging
+        /// </summary>
+        /// <returns>true if continue</returns>
+        static bool GameRuler(int dice_1_1, int dice_1_2,int dice_2_1,int dice_2_2)
+        {
+            //prepare
+            bool player_equal;
+            bool opponent_equal;
+            int countEquals = 0;
+            player_equal = dice_1_1 == dice_1_2;
+            opponent_equal = dice_2_1 == dice_2_2;
+            if (player_equal)
+            {
+                countEquals++;
+            }
+            if (opponent_equal)
+            {
+                countEquals++;
+            }
+
+            //execute
+            bool gamecontinues = true;
+            if (countEquals == 1)
+            {
                 if (player_equal)
                 {
-                    countEquals++;
+                    Console.WriteLine("You win!");
                 }
                 if (opponent_equal)
                 {
-                    countEquals++;
+                    Console.WriteLine("I win!");
                 }
-
-                if (countEquals == 1)
-                {
-                    if (player_equal)
-                    {
-                        Console.WriteLine("You win!");
-                    }
-                    if (opponent_equal)
-                    {
-                        Console.WriteLine("I win!");
-                    }
-                    cont = false;
-                }
-
-                if (countEquals == 2)
-                {
-                    if ((dice_1_1 + dice_1_2) > (dice_2_1 + dice_2_2))
-                    {
-                        Console.WriteLine("You win!");
-                        cont = false;
-                    }
-                    if ((dice_1_1 + dice_1_2) < (dice_2_1 + dice_2_2))
-                    {
-                        Console.WriteLine("I win!");
-                        cont = false;
-                    }
-                    if ((dice_1_1 + dice_1_2) == (dice_2_1 + dice_2_2))
-                    {
-                        Console.WriteLine("Draw! Continuing");
-                    }
-                }
-                Console.ReadLine();
+                gamecontinues = false;
             }
+
+            if (countEquals == 2)
+            {
+                if ((dice_1_1 + dice_1_2) > (dice_2_1 + dice_2_2))
+                {
+                    Console.WriteLine("You win!");
+                    gamecontinues = false;
+                }
+                if ((dice_1_1 + dice_1_2) < (dice_2_1 + dice_2_2))
+                {
+                    Console.WriteLine("I win!");
+                    gamecontinues = false;
+                }
+                if ((dice_1_1 + dice_1_2) == (dice_2_1 + dice_2_2))
+                {
+                    Console.WriteLine("Draw! Continuing");
+                }
+            }
+
+            //terminate
+            return gamecontinues;
         }
     }
 }
