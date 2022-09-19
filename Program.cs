@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RollTheDiceLearn
 {
@@ -12,6 +8,8 @@ namespace RollTheDiceLearn
         {
             string mode = "Random";
 
+            // this could be segragated in a method called Validate()
+            // the return of this method could be a boolean: true if validation succeeded.
             if (args.Length == 4)
             {
                 //http://www.java2s.com/Tutorial/Cpp/0040__Data-Types/Logicaloperators.htm
@@ -29,7 +27,7 @@ namespace RollTheDiceLearn
                     Console.WriteLine("!--> one or more arguments not within range (1-6)");
                     Console.WriteLine("!--> game runs in random mode");
                 }
-                
+
             }
 
             Console.WriteLine("this is a game where you will roll 2 dices, then I will roll 2 dices.");
@@ -38,17 +36,14 @@ namespace RollTheDiceLearn
             Console.WriteLine("- if we both has to dices showing equal eyes, then the one having largets will win");
             Console.WriteLine("You are running the game in " + mode + " mode");
 
+            
             Random rand = new Random();
             bool cont = true;
-            string outmessage;
+            
             int dice_1_1 = 0;
             int dice_1_2 = 0;
             int dice_2_1 = 0;
             int dice_2_2 = 0;
-            bool player_equal;
-            bool opponent_equal;
-            int countEquals = 0;
-
             while (cont)
             {
                 Console.WriteLine("You roll the dices - press <Return> to continue:");
@@ -68,16 +63,18 @@ namespace RollTheDiceLearn
                     dice_2_1 = int.Parse(args[2]);
                     dice_2_2 = int.Parse(args[3]);
                 }
+                Console.WriteLine(string.Format("Your roll: {0} - {1}", dice_1_1.ToString(), dice_1_2.ToString()));
+                Console.WriteLine(string.Format("My roll: {0} - {1}", dice_2_1.ToString(), dice_2_2.ToString()));
+
+                // this could be segragated in a method wich applies gamerules and makes decission to continue,
+                // the return of this method could be a boolean: true if continue
+                bool player_equal;
+                bool opponent_equal;
+                int countEquals = 0;
                 player_equal = dice_1_1 == dice_1_2;
                 opponent_equal = dice_2_1 == dice_2_2;
-
-                outmessage = string.Format("Your roll: {0} - {1}", dice_1_1.ToString(), dice_1_2.ToString());
-                Console.WriteLine(outmessage);
-                outmessage = string.Format("My roll: {0} - {1}", dice_2_1.ToString(), dice_2_2.ToString());
-                Console.WriteLine(outmessage);
-
                 if (player_equal)
-                { 
+                {
                     countEquals++;
                 }
                 if (opponent_equal)
@@ -100,14 +97,14 @@ namespace RollTheDiceLearn
 
                 if (countEquals == 2)
                 {
-                    if ((dice_1_1 + dice_1_2) > (dice_2_1 + dice_2_2 ))
+                    if ((dice_1_1 + dice_1_2) > (dice_2_1 + dice_2_2))
                     {
                         Console.WriteLine("You win!");
                         cont = false;
-                    }   
+                    }
                     if ((dice_1_1 + dice_1_2) < (dice_2_1 + dice_2_2))
                     {
-                        Console.WriteLine("I win!"); 
+                        Console.WriteLine("I win!");
                         cont = false;
                     }
                     if ((dice_1_1 + dice_1_2) == (dice_2_1 + dice_2_2))
